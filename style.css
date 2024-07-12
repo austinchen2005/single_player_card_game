@@ -57,3 +57,31 @@ body {
 #results {
     margin-top: 20px;
 }
+
+.card::after {
+    content: attr(data-suit);
+    font-size: 18px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+.card.hearts::after {
+    content: '♥';
+    color: red;
+}
+
+.card.diamonds::after {
+    content: '♦';
+    color: red;
+}
+
+.card.clubs::after {
+    content: '♣';
+    color: black;
+}
+
+.card.spades::after {
+    content: '♠';
+    color: black;
+}

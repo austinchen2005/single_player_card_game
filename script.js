@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded and parsed");
-    
+
     const startGameButton = document.getElementById('start-game');
     const startScreen = document.getElementById('start-screen');
     const gameScreen = document.getElementById('game-screen');
@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let deck = [];
     let wins = 0;
     let losses = 0;
+    let gameInProgress = false;
 
     const allCards = generateDeck();
 
@@ -29,11 +30,20 @@ document.addEventListener('DOMContentLoaded', () => {
         displayCards();
     });
 
-    goButton.addEventListener('click', () => {
+    goButton.addEventListener('click', async () => {
+        if (gameInProgress) return;
         console.log("Go button clicked");
+        gameInProgress = true;
         gameBoard.style.display = 'block';
         goButton.style.display = 'none';
-        dealCards();
+        await dealCards();
+        if (playerCards.length < 5 && deck.length === 0) {
+            losses++;
+            resultMessage.innerText = 'You Lose! Deck ran out of cards.';
+            results.style.display = 'block';
+        }
+        gameInProgress = false;
+        goButton.style.display = 'block';
     });
 
     playAgainButton.addEventListener('click', () => {
@@ -73,12 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function toggleCardSelection(cardElement, card) {
-        if (selectedRule.includes(card)) {
-            selectedRule = selectedRule.filter(c => c !== card);
-            cardElement.classList.remove('selected');
-        } else {
-            selectedRule.push(card);
-            cardElement.classList.add('selected');
+        if (!gameInProgress) {
+            if (selectedRule.includes(card)) {
+                selectedRule = selectedRule.filter(c => c !== card);
+                cardElement.classList.remove('selected');
+            } else {
+                selectedRule.push(card);
+                cardElement.classList.add('selected');
+            }
         }
     }
 
@@ -95,12 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedRule.includes(card)) {
                 playerCards.push(card);
                 addCardToBoard(playerBoard, card);
-                await delay(3000);
+                gameInProgress = false;
+                break;
             } else {
                 dealerCards.push(card);
                 addCardToBoard(dealerBoard, card);
-                await delay(3000);
             }
+            await delay(500);
         }
 
         while (dealerCards.length < 8 && deck.length > 0) {
@@ -108,8 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!dealerCards.includes(card)) {
                 dealerCards.push(card);
                 addCardToBoard(dealerBoard, card);
-                await delay(3000);
             }
+            await delay(500);
         }
 
         if (playerCards.length === 5) {
@@ -138,6 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (playerHandStrength > dealerHandStrength) {
             wins++;
             resultMessage.innerText = 'You Win!';
+        } else if (playerHandStrength === dealerHandStrength) {
+            losses++;
+            resultMessage.innerText = 'You Lose! Dealer wins on tie.';
         } else {
             losses++;
             resultMessage.innerText = 'You Lose!';
@@ -160,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedRule = [];
         playerCards = [];
         dealerCards = [];
+        gameInProgress = false;
     }
 
     function delay(ms) {
