@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM fully loaded and parsed");
+    
     const startGameButton = document.getElementById('start-game');
     const startScreen = document.getElementById('start-screen');
     const gameScreen = document.getElementById('game-screen');
@@ -19,16 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const allCards = generateDeck();
 
     startGameButton.addEventListener('click', () => {
+        console.log("Start Game button clicked");
         startScreen.style.display = 'none';
         gameScreen.style.display = 'block';
         displayCards();
     });
 
     goButton.addEventListener('click', () => {
+        console.log("Go button clicked");
         dealCards();
     });
 
     playAgainButton.addEventListener('click', () => {
+        console.log("Play Again button clicked");
         resetGame();
     });
 
@@ -68,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function dealCards() {
+        console.log("Dealing cards");
         playerBoard.innerHTML = '';
         dealerBoard.innerHTML = '';
         playerCards = [];
@@ -114,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function checkWinner() {
+        console.log("Checking winner");
         const playerHandStrength = evaluateHand(playerCards);
         const dealerHandStrength = evaluateHand(dealerCards);
         if (playerHandStrength > dealerHandStrength) {
@@ -132,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetGame() {
+        console.log("Resetting game");
         results.style.display = 'none';
         startScreen.style.display = 'block';
         gameScreen.style.display = 'none';
