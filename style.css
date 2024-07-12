@@ -8,7 +8,7 @@ body {
     background-color: #f0f0f0;
 }
 
-#game-container {
+#start-screen, #game-screen, #results {
     text-align: center;
 }
 
@@ -18,17 +18,36 @@ body {
     justify-content: center;
 }
 
+.suit-row {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
 .card {
-    width: 100px;
-    height: 150px;
-    margin: 10px;
-    background-color: white;
+    width: 60px;
+    height: 90px;
+    margin: 5px;
     border: 1px solid #000;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24px;
     cursor: pointer;
+    background-color: white;
+    border-radius: 5px;
+    position: relative;
+}
+
+.card.hearts, .card.diamonds {
+    color: red;
+}
+
+.card .card-value {
+    position: absolute;
+    top: 5px;
+    left: 5px;
 }
 
 .card.selected {
@@ -36,6 +55,5 @@ body {
 }
 
 #results {
-    text-align: center;
     margin-top: 20px;
 }

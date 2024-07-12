@@ -11,10 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const results = document.getElementById('results');
     const resultMessage = document.getElementById('result-message');
     const playAgainButton = document.getElementById('play-again');
+    const gameBoard = document.getElementById('game-board');
 
     let selectedRule = [];
     let playerCards = [];
     let dealerCards = [];
+    let deck = [];
     let wins = 0;
     let losses = 0;
 
@@ -29,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     goButton.addEventListener('click', () => {
         console.log("Go button clicked");
+        gameBoard.style.display = 'block';
+        goButton.style.display = 'none';
         dealCards();
     });
 
@@ -43,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let deck = [];
         for (let suit of suits) {
             for (let value of values) {
-                deck.push(`${value} of ${suit}`);
+                deck.push({ value, suit });
             }
         }
         return deck;
@@ -51,14 +55,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayCards() {
         cardsContainer.innerHTML = '';
-        allCards.forEach(card => {
-            const cardElement = document.createElement('div');
-            cardElement.classList.add('card');
-            cardElement.innerText = card;
-            cardElement.addEventListener('click', () => {
-                toggleCardSelection(cardElement, card);
+        const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+        suits.forEach(suit => {
+            const suitRow = document.createElement('div');
+            suitRow.classList.add('suit-row');
+            allCards.filter(card => card.suit === suit).forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card', card.suit);
+                cardElement.innerHTML = `<div class="card-value">${card.value}</div>`;
+                cardElement.addEventListener('click', () => {
+                    toggleCardSelection(cardElement, card);
+                });
+                suitRow.appendChild(cardElement);
             });
-            cardsContainer.appendChild(cardElement);
+            cardsContainer.appendChild(suitRow);
         });
     }
 
@@ -72,13 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function dealCards() {
-        console.log("Dealing cards");
+    async function dealCards() {
         playerBoard.innerHTML = '';
         dealerBoard.innerHTML = '';
         playerCards = [];
         dealerCards = [];
-        let deck = [...allCards];
+        deck = [...allCards];
         shuffle(deck);
 
         while (playerCards.length < 5 && deck.length > 0) {
@@ -86,9 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedRule.includes(card)) {
                 playerCards.push(card);
                 addCardToBoard(playerBoard, card);
+                await delay(3000);
             } else {
                 dealerCards.push(card);
                 addCardToBoard(dealerBoard, card);
+                await delay(3000);
             }
         }
 
@@ -97,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!dealerCards.includes(card)) {
                 dealerCards.push(card);
                 addCardToBoard(dealerBoard, card);
+                await delay(3000);
             }
         }
 
@@ -107,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addCardToBoard(board, card) {
         const cardElement = document.createElement('div');
-        cardElement.classList.add('card');
-        cardElement.innerText = card;
+        cardElement.classList.add('card', card.suit);
+        cardElement.innerHTML = `<div class="card-value">${card.value}</div>`;
         board.appendChild(cardElement);
     }
 
@@ -143,8 +155,14 @@ document.addEventListener('DOMContentLoaded', () => {
         results.style.display = 'none';
         startScreen.style.display = 'block';
         gameScreen.style.display = 'none';
+        goButton.style.display = 'block';
+        gameBoard.style.display = 'none';
         selectedRule = [];
         playerCards = [];
         dealerCards = [];
+    }
+
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 });
