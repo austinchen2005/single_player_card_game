@@ -12,11 +12,10 @@ body {
     text-align: center;
 }
 
-#game-board {
+#cards-container, #player-board, #dealer-board {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    margin-top: 20px;
+    justify-content: center;
 }
 
 .card {
@@ -32,6 +31,11 @@ body {
     cursor: pointer;
 }
 
-.card.flipped {
+.card.selected {
     background-color: #ffeb3b;
+}
+
+#results {
+    text-align: center;
+    margin-top: 20px;
 }
