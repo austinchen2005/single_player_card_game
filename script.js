@@ -8,10 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const goButton = document.getElementById('go-button');
     const playerBoard = document.getElementById('player-board');
     const dealerBoard = document.getElementById('dealer-board');
+    const dealerHandStrength = document.getElementById('dealer-hand-strength');
     const results = document.getElementById('results');
     const resultMessage = document.getElementById('result-message');
     const playAgainButton = document.getElementById('play-again');
     const gameBoard = document.getElementById('game-board');
+    const winsCounter = document.getElementById('wins-counter');
+    const lossesCounter = document.getElementById('losses-counter');
 
     let selectedRule = [];
     let playerCards = [];
@@ -39,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await dealCards();
         if (playerCards.length < 5 && deck.length === 0) {
             losses++;
+            updateScore();
             resultMessage.innerText = 'You Lose! Deck ran out of cards.';
             results.style.display = 'block';
         }
@@ -95,23 +99,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function dealCards() {
-        playerBoard.innerHTML = '';
-        dealerBoard.innerHTML = '';
-        playerCards = [];
-        dealerCards = [];
-        deck = [...allCards];
-        shuffle(deck);
-
         while (playerCards.length < 5 && deck.length > 0) {
             let card = deck.pop();
             if (selectedRule.includes(card)) {
                 playerCards.push(card);
                 addCardToBoard(playerBoard, card);
-                gameInProgress = false;
                 break;
             } else {
                 dealerCards.push(card);
                 addCardToBoard(dealerBoard, card);
+                updateDealerHandStrength();
             }
             await delay(500);
         }
@@ -121,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!dealerCards.includes(card)) {
                 dealerCards.push(card);
                 addCardToBoard(dealerBoard, card);
+                updateDealerHandStrength();
             }
             await delay(500);
         }
@@ -158,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             losses++;
             resultMessage.innerText = 'You Lose!';
         }
+        updateScore();
         results.style.display = 'block';
     }
 
@@ -177,6 +176,21 @@ document.addEventListener('DOMContentLoaded', () => {
         playerCards = [];
         dealerCards = [];
         gameInProgress = false;
+        updateDealerHandStrength();
+    }
+
+    function updateScore() {
+        winsCounter.innerText = wins;
+        lossesCounter.innerText = losses;
+    }
+
+    function updateDealerHandStrength() {
+        dealerHandStrength.innerText = evaluateDealerHand(dealerCards);
+    }
+
+    function evaluateDealerHand(cards) {
+        // Placeholder: actual hand strength evaluation logic should go here
+        return "Hand strength logic not implemented";
     }
 
     function delay(ms) {
