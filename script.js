@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
         startScreen.style.display = 'none';
         gameScreen.style.display = 'block';
 
-        deck = generateDeck();
-        
+        deck = [...allCards];
+
         displayCards();
     });
 
@@ -104,6 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function dealCards() {
         playerBoard.innerHTML = '';
         dealerBoard.innerHTML = '';
+        shuffle(deck);
+
         while (playerCards.length < 5 && deck.length > 0) {
             let card = deck.pop();
             if (selectedRule.includes(card)) {
