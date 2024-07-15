@@ -99,6 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function dealCards() {
+        playerBoard.innerHTML = '';
+        dealerBoard.innerHTML = '';
         while (playerCards.length < 5 && deck.length > 0) {
             let card = deck.pop();
             if (selectedRule.includes(card)) {
