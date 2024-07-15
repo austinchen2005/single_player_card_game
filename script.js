@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Start Game button clicked");
         startScreen.style.display = 'none';
         gameScreen.style.display = 'block';
+
+        deck = generateDeck();
+        
         displayCards();
     });
 
