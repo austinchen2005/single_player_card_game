@@ -18,10 +18,15 @@ body {
     justify-content: center;
 }
 
+#select-buttons-outer{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 .column-buttons {
     display: flex;
     justify-content: space-between;
-    width: calc(13 * 73px);
+    width: calc(13 * 71px);
     margin-bottom: 10px;
 }
 
