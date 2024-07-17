@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let wins = 0;
     let losses = 0;
     let gameInProgress = false;
+    let gameFinished = false;
 
     let timedelay = 100;
 
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     goButton.addEventListener('click', async () => {
-        if (gameInProgress) return;
+        if (gameInProgress || gameFinished) return;
         console.log("Go button clicked");
         gameInProgress = true;
         gameBoard.style.display = 'block';
@@ -272,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkWinner() {
         console.log("Checking winner");
+        gameFinished = true;
 
         let player_cards_str = [];
         for (let card of playerCards) {
