@@ -20,15 +20,23 @@
         <div id="game-board" style="display: none;">
             <h2>Player's Game Board</h2>
             <div id="player-board"></div>
-            <h2>Dealer's Game Board</h2>
+            <h2>Dealer's Game Board <span id="dealer-hand-strength"></span></h2>
             <div id="dealer-board"></div>
         </div>
         <div id="results" style="display: none;">
             <h2>Game Over</h2>
             <p id="result-message"></p>
+            <p>Wins: <span id="wins-counter">0</span></p>
+            <p>Losses: <span id="losses-counter">0</span></p>
             <button id="play-again">Play Again</button>
         </div>
-    </div>
+    </div> 
+    <script src="/libs/pokersolver.js"></script>
+    <script>
+        var hand = Hand.solve(['Ad', 'As', 'Jc', 'Th', '2d', 'Qs', 'Qd']);
+        console.log(hand.name); // Two Pair
+        console.log(hand.descr); // Two Pair, A's & Q's
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

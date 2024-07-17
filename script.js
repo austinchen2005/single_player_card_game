@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let losses = 0;
     let gameInProgress = false;
 
+    let timedelay = 100;
+
     const allCards = generateDeck();
 
     startGameButton.addEventListener('click', () => {
@@ -31,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
         startScreen.style.display = 'none';
         gameScreen.style.display = 'block';
 
+        playerBoard.innerHTML = '';
+        dealerBoard.innerHTML = '';
         deck = [...allCards];
 
         displayCards();
@@ -59,12 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function generateDeck() {
-        const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+        const suits = ['h', 'd', 'c', 's'];
         const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         let deck = [];
         for (let suit of suits) {
             for (let value of values) {
-                deck.push({ value, suit });
+                deck.push({value, suit});
             }
         }
         return deck;
@@ -72,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayCards() {
         cardsContainer.innerHTML = '';
-        const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+        const suits = ['h', 'd', 'c', 's'];
         suits.forEach(suit => {
             const suitRow = document.createElement('div');
             suitRow.classList.add('suit-row');
@@ -101,9 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function dealCards() {
-        playerBoard.innerHTML = '';
-        dealerBoard.innerHTML = '';
+    async function dealCards() { 
         shuffle(deck);
 
         while (playerCards.length < 5 && deck.length > 0) {
@@ -117,18 +119,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 addCardToBoard(dealerBoard, card);
                 updateDealerHandStrength();
             }
-            await delay(500);
+            await delay(timedelay);
         }
 
-        while (dealerCards.length < 8 && deck.length > 0) {
-            let card = deck.pop();
-            if (!dealerCards.includes(card)) {
-                dealerCards.push(card);
-                addCardToBoard(dealerBoard, card);
-                updateDealerHandStrength();
-            }
-            await delay(500);
-        }
+        // while (dealerCards.length < 8 && deck.length > 0) {
+        //     let card = deck.pop();
+        //     if (!dealerCards.includes(card)) {
+        //         dealerCards.push(card);
+        //         addCardToBoard(dealerBoard, card);
+        //         updateDealerHandStrength();
+        //     }
+        //     await delay(500);
+        // }
 
         if (playerCards.length === 5) {
             checkWinner();
@@ -151,25 +153,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkWinner() {
         console.log("Checking winner");
-        const playerHandStrength = evaluateHand(playerCards);
-        const dealerHandStrength = evaluateHand(dealerCards);
-        if (playerHandStrength > dealerHandStrength) {
-            wins++;
-            resultMessage.innerText = 'You Win!';
-        } else if (playerHandStrength === dealerHandStrength) {
+
+        let player_cards_str = [];
+        for (let card of playerCards){
+            console.log(card)
+            player_cards_str.push(card.value+card.suit)
+            console.log(card.value+card.suit)
+        }
+        var playerHand = Hand.solve(player_cards_str);
+        console.log(playerHand.descr);
+        console.log(playerHand.rank)
+
+        let dealer_cards_str = [];
+        for (let card of dealerCards){
+            console.log(card)
+            dealer_cards_str.push(card.value+card.suit)
+            console.log(card.value+card.suit)
+        }
+        var dealerHand = Hand.solve(dealer_cards_str);
+        console.log(dealerHand.descr);
+        var winner = Hand.winners([playerHand, dealerHand])
+        console.log('hello')
+        console.log(winner)
+        console.log(winner[0].descr)
+        console.log(typeof winner)
+        console.log(winner[0].cards[0])
+        console.log(winner[0].cards[0] in dealerCards)
+        console.log(winner[0].cards[0].value)
+        console.log(dealerCards[0].value)
+        console.log(Object.keys(winner).length)
+        
+        if ( Object.keys(winner).length == 2){
             losses++;
             resultMessage.innerText = 'You Lose! Dealer wins on tie.';
-        } else {
-            losses++;
-            resultMessage.innerText = 'You Lose!';
         }
+        else{
+            let win = 0;
+            for (let card of playerCards){
+                if(winner[0].cards[0].value==card.value && winner[0].cards[0].suit==card.suit){
+                    wins++;
+                    resultMessage.innerText = 'You Win!';
+                    win = 1;
+                    break;
+                }
+            }
+            if (win == 0){
+                losses++;
+                resultMessage.innerText = 'You Lose!';
+            }
+        }
+        
+        console.log(resultMessage)
         updateScore();
         results.style.display = 'block';
-    }
-
-    function evaluateHand(cards) {
-        // Implement Texas Hold'em hand evaluation logic here
-        return Math.random(); // Placeholder for actual hand strength
     }
 
     function resetGame() {
@@ -187,12 +223,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateScore() {
-        winsCounter.innerText = wins;
-        lossesCounter.innerText = losses;
+        console.log(wins.toString())
+        winsCounter.innerText = wins.toString();
+        lossesCounter.innerText = losses.toString();
     }
 
     function updateDealerHandStrength() {
-        dealerHandStrength.innerText = evaluateDealerHand(dealerCards);
+        // dealerHandStrength.innerText = "not implemented";
+        // dealerHandStrength.innerText = evaluateDealerHand(dealerCards);
     }
 
     function evaluateDealerHand(cards) {

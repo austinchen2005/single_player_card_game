@@ -40,7 +40,7 @@ body {
     position: relative;
 }
 
-.card.hearts, .card.diamonds {
+.card.h, .card.d {
     color: red;
 }
 
@@ -66,22 +66,22 @@ body {
     right: 5px;
 }
 
-.card.hearts::after {
+.card.h::after {
     content: '♥';
     color: red;
 }
 
-.card.diamonds::after {
+.card.d::after {
     content: '♦';
     color: red;
 }
 
-.card.clubs::after {
+.card.c::after {
     content: '♣';
     color: black;
 }
 
-.card.spades::after {
+.card.s::after {
     content: '♠';
     color: black;
 }
