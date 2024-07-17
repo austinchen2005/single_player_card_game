@@ -54,6 +54,10 @@ body {
     background-color: #ffeb3b;
 }
 
+.card.invalid {
+    background-color: #3b3b3b;
+}
+
 #results {
     margin-top: 20px;
 }

@@ -4,17 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Card Game</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
+
+    #start-screen, #game-screen, #results {
+        text-align: center;
+    }
+
+    #cards-container, #player-board, #dealer-board {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .suit-row {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .card {
+        width: 60px;
+        height: 90px;
+        margin: 5px;
+        border: 1px solid #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        cursor: pointer;
+        background-color: white;
+        border-radius: 5px;
+        position: relative;
+    }
+
+    .card.h, .card.d {
+        color: red;
+    }
+
+    .card .card-value {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+    }
+
+    .card.selected {
+        background-color: #ffeb3b;
+    }
+
+    .card.invalid {
+        background-color: #3b3b3b;
+    }
+
+    #results {
+        margin-top: 20px;
+    }
+
+    .card::after {
+        content: attr(data-suit);
+        font-size: 18px;
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+
+    .card.h::after {
+        content: '♥';
+        color: red;
+    }
+
+    .card.d::after {
+        content: '♦';
+        color: red;
+    }
+
+    .card.c::after {
+        content: '♣';
+        color: black;
+    }
+
+    .card.s::after {
+        content: '♠';
+        color: black;
+    }
+    </style>
 </head>
 <body>
     <div id="start-screen">
         <h1>Single Player Card Game</h1>
-        <button id="start-game">Start Game!</button>
+        <button id="start-game">Start Game</button>
+        <button id="settings-button">Settings</button>
+    </div>
+    <!-- <div id="settings-screen">
+        <label for="card-dealing-delay">Card Dealing Delay:</label>
+        <input type="range" id="card-dealing-delay" min="0" max="1000" step="50">
+        <button id="back-to-start">Back</button> -->
     </div>
     <div id="game-screen" style="display: none;">
         <div id="rule-selection">
             <h2>Select Your Rule</h2>
+            <div id="select-buttons">
+                <!-- Column select buttons will be added here -->
+            </div>
             <div id="cards-container"></div>
+            <div id="row-select-buttons">
+                <!-- Row select buttons will be added here -->
+            </div>
             <button id="go-button">Go</button>
         </div>
         <div id="game-board" style="display: none;">
@@ -30,7 +135,7 @@
             <p>Losses: <span id="losses-counter">0</span></p>
             <button id="play-again">Play Again</button>
         </div>
-    </div> 
+    </div>
     <script src="/libs/pokersolver.js"></script>
     <script>
         var hand = Hand.solve(['Ad', 'As', 'Jc', 'Th', '2d', 'Qs', 'Qd']);
