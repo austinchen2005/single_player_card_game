@@ -18,10 +18,15 @@ body {
     justify-content: center;
 }
 
+#select-buttons-wrapper{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 .column-buttons {
     display: flex;
     justify-content: space-between;
-    width: calc(13 * 73px);
+    width: calc(13 * 71px);
     margin-bottom: 10px;
 }
 
@@ -29,9 +34,15 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: calc(4 * 10px);
+    /*height: calc(4 * 10px);*/
     margin-left: 10px;
-    margin-bottom: 40px;
+    /*margin-bottom: 10px;*/
+}
+
+#go-button-wrapper{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .suit-row {
@@ -124,6 +135,11 @@ body {
 .medium-btn {
     width: 70px;
     height: 30px;
+    margin: 0 auto;
+    padding: 0;
+    display: inline-block;
+    line-height: 25px;
+    text-align: center;
 }
 
 .big-btn {
